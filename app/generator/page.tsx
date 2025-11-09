@@ -4,24 +4,35 @@ import { useState } from "react";
 export default function GeneratorPage() {
   const [prompt, setPrompt] = useState("");
   const [idea, setIdea] = useState("");
+  const [imageUrl, setImageUrl] = useState(""); // 👈 New: For image
   const [loading, setLoading] = useState(false);
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
     setLoading(true);
     setIdea("");
+    setImageUrl("");
 
     try {
+      // 1️⃣ Text generation
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
       });
-
       const data = await res.json();
       setIdea(data.result);
+
+      // 2️⃣ Image generation
+      const imgRes = await fetch("/api/image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+      const imgData = await imgRes.json();
+      setImageUrl(imgData.imageUrl);
     } catch (err) {
-      setIdea("⚠️ Error: Failed to get outfit ideas.");
+      setIdea("⚠️ Error: Failed to generate outfit idea or image.");
     } finally {
       setLoading(false);
     }
@@ -51,7 +62,7 @@ export default function GeneratorPage() {
       <input
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        placeholder="e.g. casual coffee date outfit"
+        placeholder="e.g. elegant dinner outfit in Paris"
         style={{
           width: "100%",
           maxWidth: "400px",
@@ -65,19 +76,22 @@ export default function GeneratorPage() {
 
       <button
         onClick={handleGenerate}
+        disabled={loading}
         style={{
-          background: "#d63384",
+          background: loading ? "#aaa" : "#d63384",
           color: "#fff",
           border: "none",
           padding: "0.8rem 1.5rem",
           borderRadius: "8px",
           cursor: "pointer",
           fontSize: "1rem",
+          transition: "0.2s",
         }}
       >
         {loading ? "Generating..." : "Generate Outfit ✨"}
       </button>
 
+      {/* Show outfit idea */}
       {idea && (
         <div
           style={{
@@ -92,6 +106,35 @@ export default function GeneratorPage() {
           }}
         >
           {idea}
+        </div>
+      )}
+
+      {/* Show AI-generated outfit image */}
+      {imageUrl && (
+        <div style={{ marginTop: "2rem" }}>
+          <img
+            src={imageUrl}
+            alt="AI generated outfit"
+            style={{
+              width: "100%",
+              maxWidth: "400px",
+              borderRadius: "12px",
+              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
+            }}
+          />
+          <a
+            href={imageUrl}
+            download="ai-outfit.png"
+            style={{
+              display: "inline-block",
+              marginTop: "1rem",
+              color: "#d63384",
+              textDecoration: "none",
+              fontWeight: "bold",
+            }}
+          >
+            ⬇️ Download Image
+          </a>
         </div>
       )}
     </main>
