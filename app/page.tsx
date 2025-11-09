@@ -12,7 +12,8 @@ export default function Home() {
         textAlign: "center",
       }}
     >
-      <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>👗 Style Your Way</h1>
+      <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>👗 Style Your Way ✨</h1>
+
       <p style={{ fontSize: "1.2rem", maxWidth: "600px" }}>
         Welcome to your AI-powered fashion designer!  
         Edit this page to start building your outfit-design experience.
