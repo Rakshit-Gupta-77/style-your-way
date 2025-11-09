@@ -11,11 +11,7 @@ export default function Navbar() {
   // Detect scroll position for blur + shadow effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -35,7 +31,7 @@ export default function Navbar() {
         position: "sticky",
         top: 0,
         zIndex: 50,
-        backdropFilter: scrolled ? "blur(12px)" : "none",
+        backdropFilter: scrolled ? "saturate(180%) blur(12px)" : "none", // ✅ Fixed line
         background: scrolled
           ? "rgba(255, 255, 255, 0.8)"
           : "linear-gradient(to right, #fde2e4, #fff0f5)",
@@ -47,7 +43,6 @@ export default function Navbar() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        backdropSaturate: "180%",
       }}
     >
       {/* Logo */}
