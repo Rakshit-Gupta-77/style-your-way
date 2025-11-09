@@ -1,13 +1,26 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
-  // Define the nav links
+  // Detect scroll position for blur + shadow effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const links = [
     { href: "/", label: "🏠 Home" },
     { href: "/about", label: "👗 About" },
@@ -19,15 +32,22 @@ export default function Navbar() {
     <nav
       style={{
         width: "100%",
-        backgroundColor: "#fff",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+        position: "sticky",
+        top: 0,
+        zIndex: 50,
+        backdropFilter: scrolled ? "blur(12px)" : "none",
+        background: scrolled
+          ? "rgba(255, 255, 255, 0.8)"
+          : "linear-gradient(to right, #fde2e4, #fff0f5)",
+        boxShadow: scrolled
+          ? "0 4px 20px rgba(0,0,0,0.1)"
+          : "0 2px 10px rgba(0,0,0,0.05)",
+        transition: "all 0.3s ease-in-out",
         padding: "1rem 2rem",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
+        backdropSaturate: "180%",
       }}
     >
       {/* Logo */}
@@ -38,14 +58,16 @@ export default function Navbar() {
           color: "#d63384",
           fontSize: "1.2rem",
           textDecoration: "none",
+          transition: "opacity 0.3s",
         }}
       >
         👗 StyleYourWay
       </Link>
 
-      {/* Hamburger Icon */}
+      {/* Hamburger Icon (Mobile) */}
       <button
         onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle menu"
         style={{
           background: "none",
           border: "none",
@@ -56,45 +78,6 @@ export default function Navbar() {
       >
         ☰
       </button>
-
-      {/* Dropdown Menu (Mobile) */}
-      <div
-        style={{
-          position: "absolute",
-          top: "60px",
-          right: menuOpen ? "10px" : "-300px",
-          backgroundColor: "#fff",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
-          borderRadius: "8px",
-          padding: "1rem",
-          transition: "all 0.3s ease",
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          width: "200px",
-        }}
-      >
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={() => setMenuOpen(false)}
-            style={{
-              textDecoration: "none",
-              fontWeight: "bold",
-              color: pathname === link.href ? "#d63384" : "#333",
-              borderBottom:
-                pathname === link.href
-                  ? "2px solid #d63384"
-                  : "2px solid transparent",
-              paddingBottom: "0.2rem",
-              transition: "all 0.2s ease",
-            }}
-          >
-            {link.label}
-          </Link>
-        ))}
-      </div>
 
       {/* Desktop Menu */}
       <div
@@ -125,6 +108,46 @@ export default function Navbar() {
         ))}
       </div>
 
+      {/* Mobile Dropdown Menu */}
+      <div
+        style={{
+          position: "absolute",
+          top: "60px",
+          right: menuOpen ? "10px" : "-300px",
+          backgroundColor: "#fff",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+          borderRadius: "10px",
+          padding: "1rem",
+          transition: "right 0.3s ease",
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          width: "200px",
+        }}
+      >
+        {links.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            onClick={() => setMenuOpen(false)}
+            style={{
+              textDecoration: "none",
+              fontWeight: "bold",
+              color: pathname === link.href ? "#d63384" : "#333",
+              borderBottom:
+                pathname === link.href
+                  ? "2px solid #d63384"
+                  : "2px solid transparent",
+              paddingBottom: "0.2rem",
+              transition: "all 0.2s ease",
+            }}
+          >
+            {link.label}
+          </Link>
+        ))}
+      </div>
+
+      {/* Responsive Styles */}
       <style jsx>{`
         @media (max-width: 768px) {
           .desktop-menu {
