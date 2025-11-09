@@ -2,21 +2,37 @@ export default function AboutPage() {
   return (
     <main
       style={{
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
-        background: "linear-gradient(to bottom, #fff0f5, #ffe4e1)",
-        color: "#333",
+        justifyContent: "center",
         textAlign: "center",
+        background: "linear-gradient(to bottom right, #fff0f5, #fde2e4)",
+        color: "#333",
+        padding: "2rem 1rem",
+        fontFamily: "Poppins, sans-serif",
       }}
     >
-      <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>👗 About Us</h1>
-      <p style={{ fontSize: "1.2rem", maxWidth: "600px" }}>
-        <b>Style Your Way</b> is your AI-powered fashion companion. 
-        We help you design, style, and express your personality 
-        through smart outfit suggestions and custom looks.
+      <h1
+        style={{
+          fontSize: "clamp(2rem, 6vw, 3rem)",
+          marginBottom: "1rem",
+          color: "#d63384",
+        }}
+      >
+        👗 About Us
+      </h1>
+      <p
+        style={{
+          fontSize: "clamp(1rem, 4vw, 1.3rem)",
+          maxWidth: "650px",
+          lineHeight: 1.6,
+        }}
+      >
+        <b>Style Your Way</b> is your AI-powered fashion partner. We help you design, visualize,
+        and express your style — powered by advanced AI and creative design tools.  
+        Our goal: make fashion more personal, creative, and inclusive.
       </p>
     </main>
   );
