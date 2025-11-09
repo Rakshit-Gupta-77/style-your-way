@@ -4,12 +4,27 @@ import { useState } from "react";
 export default function GeneratorPage() {
   const [prompt, setPrompt] = useState("");
   const [idea, setIdea] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!prompt.trim()) return;
-    setIdea(
-      `✨ Outfit idea for "${prompt}":\n• Soft pastel top\n• High-waisted jeans\n• White sneakers\n• Beige tote bag`
-    );
+    setLoading(true);
+    setIdea("");
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+
+      const data = await res.json();
+      setIdea(data.result);
+    } catch (err) {
+      setIdea("⚠️ Error: Failed to get outfit ideas.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -26,63 +41,42 @@ export default function GeneratorPage() {
         fontFamily: "Poppins, sans-serif",
       }}
     >
-      <h1
-        style={{
-          fontSize: "clamp(2rem, 6vw, 3rem)",
-          color: "#d63384",
-          marginBottom: "1rem",
-        }}
-      >
-        🧥 Outfit Generator
+      <h1 style={{ fontSize: "clamp(2rem, 6vw, 3rem)", color: "#d63384" }}>
+        🧥 AI Outfit Generator
       </h1>
-      <p
-        style={{
-          fontSize: "clamp(1rem, 4vw, 1.2rem)",
-          maxWidth: "600px",
-          marginBottom: "1.5rem",
-        }}
-      >
-        Type an occasion, mood, or event — and we’ll generate a fashion idea for you 💫
+      <p style={{ maxWidth: "600px", margin: "1rem 0 2rem", fontSize: "1.1rem" }}>
+        Describe your mood, event, or style — and our AI stylist will design your outfit 💫
       </p>
 
-      <div
+      <input
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        placeholder="e.g. casual coffee date outfit"
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "1rem",
           width: "100%",
           maxWidth: "400px",
+          padding: "0.8rem 1rem",
+          border: "1px solid #ccc",
+          borderRadius: "8px",
+          marginBottom: "1rem",
+          fontSize: "1rem",
+        }}
+      />
+
+      <button
+        onClick={handleGenerate}
+        style={{
+          background: "#d63384",
+          color: "#fff",
+          border: "none",
+          padding: "0.8rem 1.5rem",
+          borderRadius: "8px",
+          cursor: "pointer",
+          fontSize: "1rem",
         }}
       >
-        <input
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="e.g. brunch date, winter party"
-          style={{
-            width: "100%",
-            padding: "0.8rem 1rem",
-            fontSize: "1rem",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-          }}
-        />
-        <button
-          onClick={handleGenerate}
-          style={{
-            width: "100%",
-            padding: "0.8rem",
-            background: "#d63384",
-            color: "#fff",
-            border: "none",
-            borderRadius: "8px",
-            fontSize: "1rem",
-            cursor: "pointer",
-          }}
-        >
-          Generate
-        </button>
-      </div>
+        {loading ? "Generating..." : "Generate Outfit ✨"}
+      </button>
 
       {idea && (
         <div
@@ -91,11 +85,10 @@ export default function GeneratorPage() {
             background: "#fff",
             borderRadius: "10px",
             padding: "1.5rem",
-            maxWidth: "500px",
+            maxWidth: "600px",
             boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
             whiteSpace: "pre-wrap",
-            fontSize: "1rem",
-            lineHeight: 1.5,
+            textAlign: "left",
           }}
         >
           {idea}
