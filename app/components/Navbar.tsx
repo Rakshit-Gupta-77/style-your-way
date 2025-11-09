@@ -20,7 +20,15 @@ export default function Navbar() {
         zIndex: 50,
       }}
     >
-      <Link href="/" style={{ fontWeight: "bold", color: "#d63384", fontSize: "1.2rem" }}>
+      <Link
+        href="/"
+        style={{
+          fontWeight: "bold",
+          color: "#d63384",
+          fontSize: "1.2rem",
+          textDecoration: "none",
+        }}
+      >
         👗 StyleYourWay
       </Link>
 
@@ -55,9 +63,15 @@ export default function Navbar() {
           width: "200px",
         }}
       >
-        <Link href="/about" onClick={() => setMenuOpen(false)}>About</Link>
-        <Link href="/generator" onClick={() => setMenuOpen(false)}>Generator</Link>
-        <Link href="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
+        <Link href="/about" onClick={() => setMenuOpen(false)}>
+          About
+        </Link>
+        <Link href="/generator" onClick={() => setMenuOpen(false)}>
+          Generator
+        </Link>
+        <Link href="/contact" onClick={() => setMenuOpen(false)}>
+          Contact
+        </Link>
       </div>
     </nav>
   );

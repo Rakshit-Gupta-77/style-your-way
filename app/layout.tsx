@@ -16,7 +16,7 @@ export default function RootLayout({
       <body
         style={{
           margin: 0,
-          fontFamily: "Arial, sans-serif",
+          fontFamily: "Poppins, sans-serif",
           background: "#fff",
         }}
       >
