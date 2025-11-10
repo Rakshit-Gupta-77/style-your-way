@@ -1,155 +1,67 @@
 "use client";
-import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-
-  // Detect scroll position for blur + shadow effect
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
-    { href: "/", label: "🏠 Home" },
-    { href: "/about", label: "👗 About" },
-    { href: "/generator", label: "🧥 Generator" },
-    { href: "/contact", label: "📞 Contact" },
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/generator", label: "Generator" },
+    { href: "/contact", label: "Contact" },
   ];
 
   return (
-    <nav
-      style={{
-        width: "100%",
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
-        backdropFilter: scrolled ? "saturate(180%) blur(12px)" : "none", // ✅ Fixed line
-        background: scrolled
-          ? "rgba(255, 255, 255, 0.8)"
-          : "linear-gradient(to right, #fde2e4, #fff0f5)",
-        boxShadow: scrolled
-          ? "0 4px 20px rgba(0,0,0,0.1)"
-          : "0 2px 10px rgba(0,0,0,0.05)",
-        transition: "all 0.3s ease-in-out",
-        padding: "1rem 2rem",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      {/* Logo */}
-      <Link
-        href="/"
-        style={{
-          fontWeight: "bold",
-          color: "#d63384",
-          fontSize: "1.2rem",
-          textDecoration: "none",
-          transition: "opacity 0.3s",
-        }}
-      >
+    <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <Link href="/" className="text-[1.4rem] font-bold text-purple-600">
         👗 StyleYourWay
       </Link>
 
-      {/* Hamburger Icon (Mobile) */}
       <button
         onClick={() => setMenuOpen(!menuOpen)}
+        className="md:hidden text-2xl text-purple-600"
         aria-label="Toggle menu"
-        style={{
-          background: "none",
-          border: "none",
-          fontSize: "1.5rem",
-          cursor: "pointer",
-          display: "block",
-        }}
+        aria-expanded={menuOpen}
       >
         ☰
       </button>
 
-      {/* Desktop Menu */}
-      <div
-        style={{
-          display: "flex",
-          gap: "2rem",
-        }}
-        className="desktop-menu"
-      >
+      <div className="hidden items-center gap-6 md:flex">
         {links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            style={{
-              textDecoration: "none",
-              fontWeight: "bold",
-              color: pathname === link.href ? "#d63384" : "#333",
-              borderBottom:
-                pathname === link.href
-                  ? "2px solid #d63384"
-                  : "2px solid transparent",
-              paddingBottom: "0.2rem",
-              transition: "all 0.3s ease",
-            }}
+            className={`border-b-2 pb-0.5 font-semibold transition-colors ${
+              pathname === link.href
+                ? "border-purple-600 text-purple-600"
+                : "border-transparent text-gray-800 hover:text-purple-600"
+            }`}
           >
             {link.label}
           </Link>
         ))}
       </div>
 
-      {/* Mobile Dropdown Menu */}
-      <div
-        style={{
-          position: "absolute",
-          top: "60px",
-          right: menuOpen ? "10px" : "-300px",
-          backgroundColor: "#fff",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
-          borderRadius: "10px",
-          padding: "1rem",
-          transition: "right 0.3s ease",
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          width: "200px",
-        }}
-      >
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={() => setMenuOpen(false)}
-            style={{
-              textDecoration: "none",
-              fontWeight: "bold",
-              color: pathname === link.href ? "#d63384" : "#333",
-              borderBottom:
-                pathname === link.href
-                  ? "2px solid #d63384"
-                  : "2px solid transparent",
-              paddingBottom: "0.2rem",
-              transition: "all 0.2s ease",
-            }}
-          >
-            {link.label}
-          </Link>
-        ))}
-      </div>
-
-      {/* Responsive Styles */}
-      <style jsx>{`
-        @media (max-width: 768px) {
-          .desktop-menu {
-            display: none;
-          }
-        }
-      `}</style>
+      {menuOpen && (
+        <div className="absolute right-4 top-16 z-50 flex w-48 flex-col rounded-lg border bg-white p-3 shadow-md md:hidden">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className={`rounded px-2 py-2 font-medium transition-colors ${
+                pathname === link.href ? "text-purple-600" : "text-gray-800 hover:text-purple-600"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      )}
     </nav>
   );
 }
+

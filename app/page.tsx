@@ -1,53 +1,20 @@
-export default function Home() {
+export default function HomePage() {
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(to bottom, #fde2e4, #fff)",
-        color: "#333",
-        padding: "2rem 1rem",
-        textAlign: "center",
-        fontFamily: "Poppins, sans-serif",
-      }}
-    >
-      <h1
-        style={{
-          fontSize: "clamp(1.8rem, 6vw, 3rem)",
-          marginBottom: "1rem",
-        }}
-      >
-        👗 Style Your Way ✨
+    <section className="mx-auto max-w-5xl py-20 text-center">
+      <h1 className="text-balance text-4xl font-extrabold tracking-tight text-purple-700 sm:text-5xl">
+        Design Your Style 💜
       </h1>
-
-      <p
-        style={{
-          fontSize: "clamp(1rem, 4vw, 1.3rem)",
-          maxWidth: "600px",
-          lineHeight: 1.6,
-        }}
-      >
-        Welcome to your AI-powered fashion designer!  
-        Edit this page to start building your outfit design experience.
+      <p className="mx-auto mt-4 max-w-xl text-lg text-gray-600">
+        Let AI inspire your next outfit — from casual to couture.
       </p>
-
-      <button
-        style={{
-          marginTop: "2rem",
-          padding: "0.8rem 1.5rem",
-          backgroundColor: "#d63384",
-          color: "#fff",
-          border: "none",
-          borderRadius: "8px",
-          fontSize: "1rem",
-          cursor: "pointer",
-        }}
-      >
-        Start Designing
-      </button>
-    </main>
+      <div className="mt-8 flex items-center justify-center gap-4">
+        <a
+          href="/generator"
+          className="rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white shadow transition hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"
+        >
+          Try the Generator ✨
+        </a>
+      </div>
+    </section>
   );
 }

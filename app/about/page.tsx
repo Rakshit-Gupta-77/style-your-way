@@ -1,39 +1,11 @@
 export default function AboutPage() {
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-        background: "linear-gradient(to bottom right, #fff0f5, #fde2e4)",
-        color: "#333",
-        padding: "2rem 1rem",
-        fontFamily: "Poppins, sans-serif",
-      }}
-    >
-      <h1
-        style={{
-          fontSize: "clamp(2rem, 6vw, 3rem)",
-          marginBottom: "1rem",
-          color: "#d63384",
-        }}
-      >
-        👗 About Us
-      </h1>
-      <p
-        style={{
-          fontSize: "clamp(1rem, 4vw, 1.3rem)",
-          maxWidth: "650px",
-          lineHeight: 1.6,
-        }}
-      >
-        <b>Style Your Way</b> is your AI-powered fashion partner. We help you design, visualize,
-        and express your style — powered by advanced AI and creative design tools.  
-        Our goal: make fashion more personal, creative, and inclusive.
+    <section className="mx-auto max-w-3xl py-16 text-center">
+      <h2 className="text-3xl font-bold text-purple-700">About Us 🌷</h2>
+      <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-gray-600">
+        At <span className="font-semibold">Style Your Way Studio</span>, we blend creativity with AI to bring your dream
+        outfits to life. Whether it’s streetwear or elegance — our intelligent stylist helps you design what fits your vibe.
       </p>
-    </main>
+    </section>
   );
 }
